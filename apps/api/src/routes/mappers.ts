@@ -1,5 +1,6 @@
-import type { Flashcard, Kanji, Lesson, LessonCard, User } from "@gojo/db";
+import type { CallRequest, Flashcard, Kanji, Lesson, LessonCard, User } from "@gojo/db";
 import type {
+  CallRequestDto,
   FlashcardDto,
   KanjiDto,
   LessonCardDto,
@@ -31,6 +32,24 @@ export function toLessonCardDto(c: LessonCard): LessonCardDto {
     notes: c.notes ?? null,
     position: c.position,
     createdAt: c.createdAt.toISOString(),
+  };
+}
+
+export function toCallRequestDto(
+  r: CallRequest,
+  student?: { nickname: string | null; email: string },
+): CallRequestDto {
+  return {
+    id: r.id,
+    userId: r.userId,
+    studentNickname: student?.nickname ?? null,
+    studentEmail: student?.email ?? null,
+    status: r.status,
+    preferredContact: r.preferredContact ?? null,
+    notes: r.notes ?? null,
+    requestedAt: r.requestedAt.toISOString(),
+    scheduledAt: r.scheduledAt ? r.scheduledAt.toISOString() : null,
+    resolvedAt: r.resolvedAt ? r.resolvedAt.toISOString() : null,
   };
 }
 

@@ -1,9 +1,10 @@
+import { LessonCountdown } from "@/components/lesson-countdown";
+import { TrialGateBanner } from "@/components/trial-gate-banner";
+import { fetchBookingEligibility, fetchLessons } from "@/lib/api";
+import { getCurrentUser } from "@/lib/session";
+import type { LessonDto } from "@gojo/shared";
 import Link from "next/link";
 import { Suspense } from "react";
-import type { LessonDto } from "@gojo/shared";
-import { LessonCountdown } from "@/components/lesson-countdown";
-import { fetchLessons } from "@/lib/api";
-import { getCurrentUser } from "@/lib/session";
 import { bookLessonAction } from "./actions";
 import { CalendarView } from "./calendar";
 import { ViewToggle } from "./view-toggle";
@@ -18,10 +19,11 @@ export default async function LessonsPage({
   const { view = "list" } = await searchParams;
   const [user, lessonsResult] = await Promise.all([
     getCurrentUser(),
-    fetchLessons().catch((e: unknown) =>
-      e instanceof Error ? e.message : "unknown error",
-    ),
+    fetchLessons().catch((e: unknown) => (e instanceof Error ? e.message : "unknown error")),
   ]);
+  const eligibility =
+    user?.role === "student" ? await fetchBookingEligibility().catch(() => null) : null;
+  const canBook = eligibility ? eligibility.canBookFreely || eligibility.trialAvailable : true;
 
   const error = typeof lessonsResult === "string" ? lessonsResult : null;
   const lessons: LessonDto[] = typeof lessonsResult === "string" ? [] : lessonsResult;
@@ -42,6 +44,8 @@ export default async function LessonsPage({
           </Suspense>
         </div>
 
+        {eligibility ? <TrialGateBanner eligibility={eligibility} /> : null}
+
         {error ? (
           <div className="mt-10 rounded-lg border-2 border-gojo-error bg-gojo-error-soft px-5 py-4 text-sm font-bold text-gojo-error">
             API недоступен: {error}
@@ -59,7 +63,7 @@ export default async function LessonsPage({
         ) : (
           <ul className="mt-10 space-y-4">
             {lessons.map((l) => (
-              <LessonRow key={l.id} lesson={l} authenticated={!!user} />
+              <LessonRow key={l.id} lesson={l} authenticated={!!user} canBook={canBook} />
             ))}
           </ul>
         )}
@@ -68,12 +72,19 @@ export default async function LessonsPage({
   );
 }
 
-function LessonRow({ lesson, authenticated }: { lesson: LessonDto; authenticated: boolean }) {
+function LessonRow({
+  lesson,
+  authenticated,
+  canBook,
+}: {
+  lesson: LessonDto;
+  authenticated: boolean;
+  canBook: boolean;
+}) {
   const starts = new Date(lesson.startsAt);
   const ends = new Date(lesson.endsAt);
   const isToday = starts.toDateString() === new Date().toDateString();
-  const isTomorrow =
-    starts.toDateString() === new Date(Date.now() + 86400000).toDateString();
+  const isTomorrow = starts.toDateString() === new Date(Date.now() + 86400000).toDateString();
   const dayLabel = isToday ? "СЕГОДНЯ" : isTomorrow ? "ЗАВТРА" : null;
   const durationMin = Math.round((ends.getTime() - starts.getTime()) / 60000);
   const fmt = new Intl.DateTimeFormat("ru-RU", {
@@ -132,6 +143,7 @@ function LessonRow({ lesson, authenticated }: { lesson: LessonDto; authenticated
           lesson={lesson}
           authenticated={authenticated}
           isFull={isFull}
+          canBook={canBook}
         />
       </div>
       {lesson.joinState === "waiting" && lesson.joinOpensAt ? (
@@ -147,10 +159,12 @@ function LessonAction({
   lesson,
   authenticated,
   isFull,
+  canBook,
 }: {
   lesson: LessonDto;
   authenticated: boolean;
   isFull: boolean;
+  canBook: boolean;
 }) {
   if (!authenticated) {
     return (
@@ -212,6 +226,18 @@ function LessonAction({
     return (
       <span className="shrink-0 rounded-md border-2 border-gojo-ink/30 bg-gojo-surface-2 px-4 py-2 text-sm font-bold text-gojo-ink-ghost">
         Мест нет
+      </span>
+    );
+  }
+
+  if (!canBook) {
+    return (
+      <span
+        aria-disabled
+        className="shrink-0 cursor-not-allowed rounded-md border-2 border-gojo-ink/30 bg-gojo-surface-2 px-4 py-2 text-sm font-bold text-gojo-ink-ghost"
+        title="Нужен звонок или подписка — см. баннер выше"
+      >
+        Недоступно
       </span>
     );
   }

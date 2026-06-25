@@ -1,5 +1,7 @@
 "use client";
 
+import { requestCallWithDetailsAction } from "@/app/lessons/actions";
+import { authClient } from "@/lib/auth-client";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
@@ -64,6 +66,7 @@ export function Landing() {
   const [active, setActive] = useState(0);
   const [bookingOpen, setBookingOpen] = useState(false);
   const [bookingSubmitted, setBookingSubmitted] = useState(false);
+  const [signupPending, setSignupPending] = useState(false);
   const [guideOpen, setGuideOpen] = useState(false);
   const [guideSubmitted, setGuideSubmitted] = useState(false);
   const [intercomOpen, setIntercomOpen] = useState(false);
@@ -79,12 +82,47 @@ export function Landing() {
     setShowTooltip(false);
   };
 
-  const submitForm = () => {
-    if (!readValue("f-name") || !readValue("f-email")) {
+  const submitForm = async () => {
+    const name = readValue("f-name");
+    const email = readValue("f-email");
+    const password = readValue("f-password");
+    if (!name || !email) {
       toast.error("Пожалуйста, заполни имя и email");
       return;
     }
-    setBookingSubmitted(true);
+    if (password.length < 8) {
+      toast.error("Пароль — минимум 8 символов");
+      return;
+    }
+
+    setSignupPending(true);
+    try {
+      const res = await authClient.signUp.email({
+        email,
+        password,
+        name,
+        // biome-ignore lint/suspicious/noExplicitAny: additional fields from better-auth plugin
+        ...({ nickname: name, role: "student" } as any),
+      });
+      if (res.error) {
+        toast.error(res.error.message ?? "Не получилось создать аккаунт");
+        return;
+      }
+
+      const contact = readValue("f-contact");
+      const level = readValue("f-level");
+      const goal = readValue("f-goal");
+      const notes = [level && `Уровень: ${level}`, goal && `Цель: ${goal}`]
+        .filter(Boolean)
+        .join(". ");
+      await requestCallWithDetailsAction(contact || undefined, notes || undefined);
+
+      setBookingSubmitted(true);
+    } catch {
+      toast.error("Что-то пошло не так. Попробуй ещё раз.");
+    } finally {
+      setSignupPending(false);
+    }
   };
   const submitGuideForm = () => {
     if (!readValue("g-name") || !readValue("g-email")) {
@@ -1856,6 +1894,18 @@ export function Landing() {
                 </div>
               </div>
               <div className="form-group">
+                <label className="form-label" htmlFor="f-password">
+                  Пароль
+                </label>
+                <input
+                  className="form-input"
+                  type="password"
+                  placeholder="минимум 8 символов"
+                  minLength={8}
+                  id="f-password"
+                />
+              </div>
+              <div className="form-group">
                 <label className="form-label" htmlFor="f-contact">
                   Telegram или телефон
                 </label>
@@ -1892,12 +1942,17 @@ export function Landing() {
                   <option>Просто интересно / хочу попробовать</option>
                 </select>
               </div>
-              <button type="button" className="form-submit" onClick={submitForm}>
-                Записаться на бесплатный урок →
+              <button
+                type="button"
+                className="form-submit"
+                onClick={submitForm}
+                disabled={signupPending}
+              >
+                {signupPending ? "Создаём аккаунт…" : "Создать аккаунт и начать →"}
               </button>
               <p className="form-note">
-                Нажимая кнопку, ты соглашаешься с политикой конфиденциальности. Никакого спама —
-                только информация о записи.
+                Дальше — короткий звонок, чтобы подобрать формат и назначить бесплатный урок.
+                Нажимая кнопку, ты соглашаешься с политикой конфиденциальности.
               </p>
             </div>
           </div>
@@ -1908,15 +1963,15 @@ export function Landing() {
             style={{ display: bookingSubmitted ? "block" : "none" }}
           >
             <div className="form-success-icon">🎌</div>
-            <div className="form-success-title">Отлично, ждём тебя!</div>
+            <div className="form-success-title">Аккаунт создан!</div>
             <p className="form-success-text">
-              Мы получили твою заявку и свяжемся в течение 24 часов, чтобы договориться о времени
-              первого урока.
+              Мы получили твою заявку на звонок и свяжемся в течение 24 часов, чтобы назначить
+              бесплатный урок.
               <br />
-              <br />А пока — присоединяйся к нашему Telegram-сообществу 👇
+              <br />А пока — пройди короткий квиз на уровень, он уже доступен в личном кабинете.
             </p>
             <a
-              href="#"
+              href="/onboarding/quiz"
               style={{
                 display: "inline-flex",
                 alignItems: "center",
@@ -1933,7 +1988,7 @@ export function Landing() {
                 boxShadow: "3px 3px 0 rgba(0,0,0,0.15)",
               }}
             >
-              ✈️ Telegram-сообщество Gojo
+              Пройти квиз на уровень →
             </a>
           </div>
         </div>

@@ -4,6 +4,7 @@ import { Hono } from "hono";
 import { HTTPException } from "hono/http-exception";
 import { type AuthContext, requireAuth } from "../auth/middleware.ts";
 import { db } from "../db.ts";
+import { canBookLesson, getBookingEligibility } from "../lib/eligibility.ts";
 import { AUTO_COMPLETE_AFTER_END_MS } from "../lib/lesson-state.ts";
 import { materializeCardsForBooking } from "../lib/materialize.ts";
 import { toLessonDto } from "./mappers.ts";
@@ -66,6 +67,11 @@ lessonsRoute.get("/", async (c) => {
       });
     }),
   );
+});
+
+lessonsRoute.get("/eligibility", requireAuth, async (c) => {
+  const user = c.get("user")!;
+  return c.json(await getBookingEligibility(user.id));
 });
 
 lessonsRoute.get("/my-stats", requireAuth, async (c) => {
@@ -167,6 +173,13 @@ lessonsRoute.get("/:id", async (c) => {
 lessonsRoute.post("/:id/book", requireAuth, async (c) => {
   const user = c.get("user")!;
   const lessonId = c.req.param("id");
+
+  if (!(await canBookLesson(user.id))) {
+    throw new HTTPException(402, {
+      message:
+        "no free trial or active subscription — request an intro call or choose a plan first",
+    });
+  }
 
   const [lesson] = await db.select().from(lessons).where(eq(lessons.id, lessonId)).limit(1);
   if (!lesson) throw new HTTPException(404, { message: "lesson not found" });

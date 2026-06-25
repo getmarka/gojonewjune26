@@ -1,6 +1,7 @@
 import { Avatar } from "@/components/avatar";
 import { Landing } from "@/components/landing";
-import { fetchLessons, fetchStudentStats } from "@/lib/api";
+import { TrialGateBanner } from "@/components/trial-gate-banner";
+import { fetchBookingEligibility, fetchLessons, fetchStudentStats } from "@/lib/api";
 import { getCurrentUser } from "@/lib/session";
 import type { LessonDto, StudentStatsDto } from "@gojo/shared";
 import Link from "next/link";
@@ -19,6 +20,8 @@ async function Dashboard() {
     fetchStudentStats().catch(() => null),
     fetchLessons().catch(() => [] as LessonDto[]),
   ]);
+  const eligibility =
+    user?.role === "student" ? await fetchBookingEligibility().catch(() => null) : null;
 
   const stats: StudentStatsDto = statsResult ?? {
     completedLessons: 0,
@@ -40,6 +43,8 @@ async function Dashboard() {
             <h1 className="font-serif text-[28px] font-bold">{user?.nickname ?? user?.email}</h1>
           </div>
         </div>
+
+        {eligibility ? <TrialGateBanner eligibility={eligibility} /> : null}
 
         {/* Next lesson highlight */}
         {nextLesson ? (

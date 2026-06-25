@@ -1,5 +1,7 @@
 import type {
   AddLessonCardInput,
+  BookingEligibilityDto,
+  CallRequestDto,
   FlashcardDto,
   KanjiBreakdownEntry,
   KanjiDto,
@@ -13,6 +15,7 @@ import type {
   ReviewQueueDto,
   StudentStatsDto,
   SubmitReviewInput,
+  UpdateCallRequestInput,
   UpdateProfileInput,
   UserDto,
 } from "@gojo/shared";
@@ -63,6 +66,35 @@ export function fetchLesson(id: string) {
 
 export function fetchStudentStats() {
   return apiFetch<StudentStatsDto>("/lessons/my-stats");
+}
+
+export function fetchBookingEligibility() {
+  return apiFetch<BookingEligibilityDto>("/lessons/eligibility");
+}
+
+export function requestIntroCall(preferredContact?: string, notes?: string) {
+  return apiFetch<CallRequestDto>("/call-requests", {
+    method: "POST",
+    body: JSON.stringify({
+      ...(preferredContact ? { preferredContact } : {}),
+      ...(notes ? { notes } : {}),
+    }),
+  });
+}
+
+export function fetchMyCallRequest() {
+  return apiFetch<CallRequestDto | null>("/call-requests/me");
+}
+
+export function fetchCallRequestQueue() {
+  return apiFetch<CallRequestDto[]>("/call-requests");
+}
+
+export function updateCallRequest(id: string, body: UpdateCallRequestInput) {
+  return apiFetch<CallRequestDto>(`/call-requests/${id}`, {
+    method: "PATCH",
+    body: JSON.stringify(body),
+  });
 }
 
 export function fetchLessonMaterials(lessonId: string) {
@@ -138,9 +170,7 @@ export function promoteCard(id: string) {
 }
 
 export function fetchKanjiBreakdown(word: string) {
-  return apiFetch<KanjiBreakdownEntry[]>(
-    `/kanji/breakdown?word=${encodeURIComponent(word)}`,
-  );
+  return apiFetch<KanjiBreakdownEntry[]>(`/kanji/breakdown?word=${encodeURIComponent(word)}`);
 }
 
 export function fetchKanji(char: string) {
