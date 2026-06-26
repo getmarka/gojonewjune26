@@ -130,13 +130,16 @@ export function Landing() {
         </a>
         <div className="nav-links">
           <a href="#mission" className="nav-link">
-            Наша миссия
+            Миссия
           </a>
           <a href="#how" className="nav-link">
-            Как это работает
+            Как работает
           </a>
           <a href="#pricing" className="nav-link">
             Цены
+          </a>
+          <a href="#teachers" className="nav-link">
+            Преподаватели
           </a>
           <a href="#faq" className="nav-link">
             Вопросы
@@ -249,29 +252,29 @@ export function Landing() {
             <span className="ru">Приятно познакомиться</span>
           </span>
           <span className="phrase">
-            <span className="jp">ありがとう</span>
+            <span className="jp">木漏れ日</span>
             <span className="sep">·</span>
-            <span className="ru">Спасибо</span>
+            <span className="ru">Свет сквозь листья</span>
           </span>
           <span className="phrase">
             <span className="jp">がんばって</span>
             <span className="sep">·</span>
-            <span className="ru">Удачи / Давай!</span>
+            <span className="ru">Давай, ты можешь!</span>
           </span>
           <span className="phrase">
-            <span className="jp">日本語</span>
+            <span className="jp">侘び寂び</span>
             <span className="sep">·</span>
-            <span className="ru">Японский язык</span>
+            <span className="ru">Красота несовершенства</span>
           </span>
           <span className="phrase">
             <span className="jp">よろしく</span>
             <span className="sep">·</span>
-            <span className="ru">Буду рад знакомству</span>
+            <span className="ru">Рад знакомству</span>
           </span>
           <span className="phrase">
-            <span className="jp">おはよう</span>
+            <span className="jp">積ん読</span>
             <span className="sep">·</span>
-            <span className="ru">Доброе утро</span>
+            <span className="ru">Купить и не читать</span>
           </span>
           <span className="phrase">
             <span className="jp">すごい</span>
@@ -279,9 +282,29 @@ export function Landing() {
             <span className="ru">Потрясающе!</span>
           </span>
           <span className="phrase">
+            <span className="jp">木枯らし</span>
+            <span className="sep">·</span>
+            <span className="ru">Первый зимний ветер</span>
+          </span>
+          <span className="phrase">
             <span className="jp">わかりました</span>
             <span className="sep">·</span>
             <span className="ru">Понял(а)</span>
+          </span>
+          <span className="phrase">
+            <span className="jp">物の哀れ</span>
+            <span className="sep">·</span>
+            <span className="ru">Грусть вещей</span>
+          </span>
+          <span className="phrase">
+            <span className="jp">日本語</span>
+            <span className="sep">·</span>
+            <span className="ru">Японский язык</span>
+          </span>
+          <span className="phrase">
+            <span className="jp">木漏れ日</span>
+            <span className="sep">·</span>
+            <span className="ru">Свет сквозь листья</span>
           </span>
           <span className="phrase">
             <span className="jp">はじめまして</span>
@@ -289,29 +312,19 @@ export function Landing() {
             <span className="ru">Приятно познакомиться</span>
           </span>
           <span className="phrase">
-            <span className="jp">ありがとう</span>
+            <span className="jp">侘び寂び</span>
             <span className="sep">·</span>
-            <span className="ru">Спасибо</span>
+            <span className="ru">Красота несовершенства</span>
           </span>
           <span className="phrase">
             <span className="jp">がんばって</span>
             <span className="sep">·</span>
-            <span className="ru">Удачи / Давай!</span>
+            <span className="ru">Давай, ты можешь!</span>
           </span>
           <span className="phrase">
-            <span className="jp">日本語</span>
+            <span className="jp">積ん読</span>
             <span className="sep">·</span>
-            <span className="ru">Японский язык</span>
-          </span>
-          <span className="phrase">
-            <span className="jp">よろしく</span>
-            <span className="sep">·</span>
-            <span className="ru">Буду рад знакомству</span>
-          </span>
-          <span className="phrase">
-            <span className="jp">おはよう</span>
-            <span className="sep">·</span>
-            <span className="ru">Доброе утро</span>
+            <span className="ru">Купить и не читать</span>
           </span>
           <span className="phrase">
             <span className="jp">すごい</span>
@@ -319,9 +332,19 @@ export function Landing() {
             <span className="ru">Потрясающе!</span>
           </span>
           <span className="phrase">
+            <span className="jp">物の哀れ</span>
+            <span className="sep">·</span>
+            <span className="ru">Грусть вещей</span>
+          </span>
+          <span className="phrase">
             <span className="jp">わかりました</span>
             <span className="sep">·</span>
             <span className="ru">Понял(а)</span>
+          </span>
+          <span className="phrase">
+            <span className="jp">日本語</span>
+            <span className="sep">·</span>
+            <span className="ru">Японский язык</span>
           </span>
         </div>
       </div>
@@ -334,7 +357,6 @@ export function Landing() {
             <br />
             опыта преподавания
           </div>
-          <div className="stat-sub">Команда Gojo</div>
         </div>
         <div className="stat-item">
           <div className="stat-num">241</div>
@@ -343,7 +365,6 @@ export function Landing() {
             <br />
             прошли обучение
           </div>
-          <div className="stat-sub">Личный трек-рекорд</div>
         </div>
         <div className="stat-item">
           <div className="stat-num">72%</div>
@@ -352,7 +373,6 @@ export function Landing() {
             <br />
             на следующий уровень
           </div>
-          <div className="stat-sub">Прогресс учеников</div>
         </div>
       </section>
 
@@ -383,10 +403,6 @@ export function Landing() {
                   Gojo — школа для тех, кто хочет не просто «учить японский», а{" "}
                   <strong>реально им пользоваться</strong>: переехать, работать, смотреть аниме без
                   субтитров.
-                </p>
-                <p className="mission-body">
-                  Мы выстроили систему, где нет хаоса и лишнего — только проверенная методология,
-                  живые уроки и платформа, которая не мешает учиться.
                 </p>
                 <p className="mission-body mission-body-strong">
                   Потому что нам важен ваш результат, а не просто оплата.
@@ -1239,8 +1255,8 @@ export function Landing() {
             marginBottom: "0",
           }}
         >
-          Все тарифы — месячная подписка. Первой когорте скидка <strong>40%</strong> от обычных цен.
-          Финальные условия озвучим перед стартом набора.
+          Все тарифы — месячная подписка. Первый урок бесплатно — платишь только если решишь
+          продолжать.
         </p>
 
         <div className="pricing-grid">
@@ -1253,13 +1269,13 @@ export function Landing() {
             <div className="pricing-divider" />
             <div className="pricing-price-wrap">
               <span className="pricing-currency">₽</span>
-              <span className="pricing-price">25 000</span>
+              <span className="pricing-price">30 000</span>
             </div>
-            <div className="pricing-period">в месяц · подписка</div>
-            <div className="pricing-old">Обычная цена: ₽ 35 000 / мес</div>
+            <div className="pricing-period">в месяц · при оплате подпиской</div>
+            <div className="pricing-old">Поурочно: ₽ 40 000 / мес</div>
             <div className="pricing-features">
               <div className="pricing-feature">
-                <span className="pricing-feature-dot">✓</span>2 индивидуальных урока в неделю
+                <span className="pricing-feature-dot">✓</span>8 индивидуальных уроков в месяц
               </div>
               <div className="pricing-feature">
                 <span className="pricing-feature-dot">✓</span>Полностью персональная программа
@@ -1282,7 +1298,7 @@ export function Landing() {
                 openModal();
               }}
             >
-              Записаться на бесплатный урок →
+              Начать индивидуально →
             </a>
           </div>
 
@@ -1294,13 +1310,13 @@ export function Landing() {
             <div className="pricing-divider" />
             <div className="pricing-price-wrap">
               <span className="pricing-currency">₽</span>
-              <span className="pricing-price">12 000</span>
+              <span className="pricing-price">15 000</span>
             </div>
-            <div className="pricing-period">в месяц · подписка</div>
-            <div className="pricing-old">Обычная цена: ₽ 20 000 / мес</div>
+            <div className="pricing-period">в месяц · при оплате подпиской</div>
+            <div className="pricing-old">Поурочно: ₽ 22 000 / мес</div>
             <div className="pricing-features">
               <div className="pricing-feature">
-                <span className="pricing-feature-dot">✓</span>2–3 групповых урока в неделю
+                <span className="pricing-feature-dot">✓</span>10–12 групповых уроков в месяц
               </div>
               <div className="pricing-feature">
                 <span className="pricing-feature-dot">✓</span>Группы до 8 человек
@@ -1323,7 +1339,7 @@ export function Landing() {
                 openModal();
               }}
             >
-              Записаться на бесплатный урок →
+              Записаться в группу →
             </a>
           </div>
 
@@ -1335,11 +1351,11 @@ export function Landing() {
             <div className="pricing-divider" />
             <div className="pricing-price-wrap">
               <span className="pricing-currency">₽</span>
-              <span className="pricing-price">6 000</span>
+              <span className="pricing-price">10 000</span>
             </div>
-            <div className="pricing-period">в месяц · подписка</div>
+            <div className="pricing-period">в месяц · при оплате подпиской</div>
             <div className="pricing-old" style={{ color: "#b0b0b0" }}>
-              Обычная цена: ₽ 10 000 / мес
+              Поурочно: ₽ 14 000 / мес
             </div>
             <div className="pricing-features">
               <div className="pricing-feature">
@@ -1480,13 +1496,13 @@ export function Landing() {
             <details className="faq-item">
               <summary className="faq-q">
                 <span>
-                  <span className="faq-q-num">02</span>Когда стартуют первые группы?
+                  <span className="faq-q-num">02</span>Как быстро можно начать?
                 </span>
                 <span className="faq-q-icon">+</span>
               </summary>
               <div className="faq-a">
-                Запуск — <strong>осенью 2026</strong>. Сначала откроем 3 группы, набор будет идти из
-                листа ожидания. Точную дату и время групп пришлём за 2–3 недели до старта.
+                Записываешься на бесплатный урок, мы определяем уровень и согласовываем удобное
+                время. Первый урок обычно проходит в течение <strong>3–5 дней</strong> после записи.
               </div>
             </details>
 

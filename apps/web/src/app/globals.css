@@ -262,7 +262,7 @@ html:has(.landing-root) {
   color: var(--orange);
 }
 .landing-root .nav-cta {
-  background: var(--ink);
+  background: var(--orange);
   color: var(--white);
   border: none;
   padding: 11px 22px;
@@ -273,12 +273,11 @@ html:has(.landing-root) {
   cursor: pointer;
   transition: all 0.18s;
   text-decoration: none;
-  box-shadow: 3px 3px 0 var(--orange);
 }
 .landing-root .nav-cta:hover {
-  background: var(--orange);
-  transform: translate(-1px, -1px);
-  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.25);
+  background: var(--orange-light);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(247, 107, 0, 0.35);
 }
 /* ───── HERO ───── */
 .landing-root .hero {
